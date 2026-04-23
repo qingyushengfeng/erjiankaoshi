@@ -138,6 +138,33 @@ body{padding-bottom:calc(var(--nav-h) + 10px)}
 .case-ref{display:none;margin-top:10px;padding:10px;background:rgba(72,187,120,.08);border-radius:var(--radius-sm);font-size:12px;line-height:1.7;border:1px solid rgba(72,187,120,.2)}
 .case-ref.show{display:block}
 .progress-section{margin-bottom:12px}
+.study-chapter{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;border:1px solid var(--border)}
+.study-chapter:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.study-chapter.completed{opacity:.7}
+.study-chapter .sc-left{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.study-chapter .sc-right{flex:1;min-width:0}
+.study-chapter .sc-right h4{font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.study-chapter .sc-right p{font-size:11px;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.study-chapter .sc-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.study-chapter .sc-check.done{background:var(--success);color:#fff;border-color:var(--success)}
+.study-point-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);border-left:4px solid var(--primary)}
+.study-point-card h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.study-point-card .sp-desc{font-size:14px;color:var(--text-light);line-height:1.7;margin-bottom:12px}
+.study-point-card .sp-detail{font-size:14px;line-height:2;color:var(--text);padding:12px;background:var(--bg);border-radius:var(--radius-sm)}
+.study-point-card .sp-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.video-card{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow)}
+.video-card iframe{width:100%;aspect-ratio:16/9;border:none}
+.video-card .vc-info{padding:12px 16px}
+.video-card .vc-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.video-card .vc-desc{font-size:12px;color:var(--text-light)}
+.study-nav-btns{display:flex;gap:10px;margin:16px 0}
+.study-nav-btns .btn{flex:1}
+.resource-link{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--card);border-radius:var(--radius-sm);margin-bottom:8px;text-decoration:none;color:var(--text);box-shadow:var(--shadow);transition:all .2s}
+.resource-link:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.resource-link .rl-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.resource-link .rl-text{flex:1}
+.resource-link .rl-text h4{font-size:13px;font-weight:600}
+.resource-link .rl-text p{font-size:11px;color:var(--text-light)}
 .progress-section .ps-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .progress-section .ps-label{font-size:13px;font-weight:500}
 .progress-section .ps-value{font-size:12px;color:var(--text-light)}
@@ -153,9 +180,9 @@ body{padding-bottom:calc(var(--nav-h) + 10px)}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3m10-11v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
     <span>首页</span>
   </div>
-  <div class="nav-item" onclick="switchPage('knowledge')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-    <span>知识点</span>
+  <div class="nav-item" onclick="switchPage('study')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    <span>学习</span>
   </div>
   <div class="nav-item" onclick="switchPage('practice')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -165,12 +192,17 @@ body{padding-bottom:calc(var(--nav-h) + 10px)}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
     <span>模考</span>
   </div>
+  <div class="nav-item" onclick="switchPage('knowledge')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5"/></svg>
+    <span>题库</span>
+  </div>
   <div class="nav-item" onclick="switchPage('profile')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     <span>我的</span>
   </div>
 </div>
 <div class="page active" id="page-home"></div>
+<div class="page" id="page-study"></div>
 <div class="page" id="page-knowledge"></div>
 <div class="page" id="page-practice"></div>
 <div class="page" id="page-exam"></div>
@@ -303,46 +335,46 @@ const CHAPTERS = {
 
 const QUIZZES = [
   // ===== 施工管理 =====
-  {id:'q1',subject:'manage',type:'single',q:'项目结构图描述的是（）之间的关系。',options:['工作任务','组织关系','合同关系','管理职能'],answer:0,explain:'项目结构图是一个组织工具，它通过树状图的方式对一个项目的结构进行逐层分解，以反映组成该项目的所有工作任务。描述的是工作任务之间的逻辑关系。'},
-  {id:'q2',subject:'manage',type:'single',q:'在组织结构模式中，每个工作部门只有一个指令源的是（）组织结构。',options:['职能','线性','矩阵','事业部'],answer:1,explain:'线性组织结构中每个工作部门只能对其直接的下属部门下达工作指令，每个工作部门只有一个指令源。'},
-  {id:'q3',subject:'manage',type:'single',q:'赢得值法中，CV=BCWP-ACWP，若CV>0，则表示（）。',options:['进度提前','进度拖延','成本节约','成本超支'],answer:2,explain:'CV=BCWP-ACWP（成本偏差），CV>0表示已完成工作的预算成本大于实际成本，即成本节约。'},
-  {id:'q4',subject:'manage',type:'single',q:'双代号网络图中，关键线路上的工作总时差为（）。',options:['大于0','小于0','等于0','不一定'],answer:2,explain:'关键线路上的工作称为关键工作。当计划工期等于计算工期时，关键工作的总时差为零。'},
-  {id:'q5',subject:'manage',type:'single',q:'安全生产责任制是最基本的安全生产管理制度，是其（）制度。',options:['辅助','核心','参考','补充'],answer:1,explain:'安全生产责任制是最基本的安全管理制度，是所有安全生产管理制度的核心。'},
-  {id:'q6',subject:'manage',type:'multi',q:'施工成本管理的任务包括（）。',options:['成本预测','成本计划','成本控制','成本核算','成本分析','成本考核'],answer:[0,1,2,3,4,5],explain:'施工成本管理的任务包括成本预测、成本计划、成本控制、成本核算、成本分析、成本考核六项任务。'},
-  {id:'q7',subject:'manage',type:'multi',q:'网络计划中的关键工作是指（）的工作。',options:['总时差最小','自由时差最小','位于关键线路上','持续时间最长'],answer:[0,2],explain:'关键工作是总时差最小的工作。当计划工期等于计算工期时，总时差为零的工作是关键工作。关键线路上的工作均为关键工作。'},
-  {id:'q8',subject:'manage',type:'single',q:'质量事故中，造成3人死亡、1000万元直接经济损失的属于（）。',options:['特别重大事故','重大事故','较大事故','一般事故'],answer:2,explain:'较大事故是指造成3人以上10人以下死亡，或者10人以上50人以下重伤，或者1000万元以上5000万元以下直接经济损失的事故。'},
-  {id:'q9',subject:'manage',type:'single',q:'施工合同按照计价方式分类，不包括（）。',options:['总价合同','单价合同','成本加酬金合同','总承包合同'],answer:3,explain:'施工合同按计价方式分为总价合同、单价合同、成本加酬金合同三类。总承包合同不是按计价方式分类的。'},
-  {id:'q10',subject:'manage',type:'single',q:'信息管理部门负责编制（），是信息管理的指导文件。',options:['项目管理规划大纲','信息管理手册','施工组织设计','项目可行性报告'],answer:1,explain:'信息管理部门的主要工作任务之一是负责编制信息管理手册，作为信息管理的指导文件。'},
-  {id:'q11',subject:'manage',type:'multi',q:'下列属于工作流程组织的有（）。',options:['管理工作流程','信息处理工作流程','物质流程','资金流程'],answer:[0,1,2],explain:'工作流程组织包括管理工作流程组织、信息处理工作流程组织和物质流程组织三类。'},
-  {id:'q12',subject:'manage',type:'single',q:'安全检查的主要内容包括（）。',options:['查思想','查制度','查隐患','查整改','查事故处理'],answer:0,explain:'实际上安全检查的主要内容包括：查思想、查制度、查管理、查隐患、查整改、查事故处理。本题是单选题，"查思想"是其中之一。（注意多选也是正确答案）'},
+  {id:'q1',subject:'manage',chapter:'m1',type:'single',q:'项目结构图描述的是（）之间的关系。',options:['工作任务','组织关系','合同关系','管理职能'],answer:0,explain:'项目结构图是一个组织工具，它通过树状图的方式对一个项目的结构进行逐层分解，以反映组成该项目的所有工作任务。描述的是工作任务之间的逻辑关系。'},
+  {id:'q2',subject:'manage',chapter:'m1',type:'single',q:'在组织结构模式中，每个工作部门只有一个指令源的是（）组织结构。',options:['职能','线性','矩阵','事业部'],answer:1,explain:'线性组织结构中每个工作部门只能对其直接的下属部门下达工作指令，每个工作部门只有一个指令源。'},
+  {id:'q3',subject:'manage',chapter:'m2',type:'single',q:'赢得值法中，CV=BCWP-ACWP，若CV>0，则表示（）。',options:['进度提前','进度拖延','成本节约','成本超支'],answer:2,explain:'CV=BCWP-ACWP（成本偏差），CV>0表示已完成工作的预算成本大于实际成本，即成本节约。'},
+  {id:'q4',subject:'manage',chapter:'m3',type:'single',q:'双代号网络图中，关键线路上的工作总时差为（）。',options:['大于0','小于0','等于0','不一定'],answer:2,explain:'关键线路上的工作称为关键工作。当计划工期等于计算工期时，关键工作的总时差为零。'},
+  {id:'q5',subject:'manage',chapter:'m5',type:'single',q:'安全生产责任制是最基本的安全生产管理制度，是其（）制度。',options:['辅助','核心','参考','补充'],answer:1,explain:'安全生产责任制是最基本的安全管理制度，是所有安全生产管理制度的核心。'},
+  {id:'q6',subject:'manage',chapter:'m2',type:'multi',q:'施工成本管理的任务包括（）。',options:['成本预测','成本计划','成本控制','成本核算','成本分析','成本考核'],answer:[0,1,2,3,4,5],explain:'施工成本管理的任务包括成本预测、成本计划、成本控制、成本核算、成本分析、成本考核六项任务。'},
+  {id:'q7',subject:'manage',chapter:'m3',type:'multi',q:'网络计划中的关键工作是指（）的工作。',options:['总时差最小','自由时差最小','位于关键线路上','持续时间最长'],answer:[0,2],explain:'关键工作是总时差最小的工作。当计划工期等于计算工期时，总时差为零的工作是关键工作。关键线路上的工作均为关键工作。'},
+  {id:'q8',subject:'manage',chapter:'m4',type:'single',q:'质量事故中，造成3人死亡、1000万元直接经济损失的属于（）。',options:['特别重大事故','重大事故','较大事故','一般事故'],answer:2,explain:'较大事故是指造成3人以上10人以下死亡，或者10人以上50人以下重伤，或者1000万元以上5000万元以下直接经济损失的事故。'},
+  {id:'q9',subject:'manage',chapter:'m6',type:'single',q:'施工合同按照计价方式分类，不包括（）。',options:['总价合同','单价合同','成本加酬金合同','总承包合同'],answer:3,explain:'施工合同按计价方式分为总价合同、单价合同、成本加酬金合同三类。总承包合同不是按计价方式分类的。'},
+  {id:'q10',subject:'manage',chapter:'m7',type:'single',q:'信息管理部门负责编制（），是信息管理的指导文件。',options:['项目管理规划大纲','信息管理手册','施工组织设计','项目可行性报告'],answer:1,explain:'信息管理部门的主要工作任务之一是负责编制信息管理手册，作为信息管理的指导文件。'},
+  {id:'q11',subject:'manage',chapter:'m1',type:'multi',q:'下列属于工作流程组织的有（）。',options:['管理工作流程','信息处理工作流程','物质流程','资金流程'],answer:[0,1,2],explain:'工作流程组织包括管理工作流程组织、信息处理工作流程组织和物质流程组织三类。'},
+  {id:'q12',subject:'manage',chapter:'m5',type:'single',q:'安全检查的主要内容包括（）。',options:['查思想','查制度','查隐患','查整改','查事故处理'],answer:0,explain:'安全检查的主要内容包括：查思想、查制度、查管理、查隐患、查整改、查事故处理。'},
 
   // ===== 法规 =====
-  {id:'q13',subject:'law',type:'single',q:'在我国法律体系中，法的效力层级最高的是（）。',options:['宪法','法律','行政法规','地方性法规'],answer:0,explain:'宪法具有最高的法律效力，一切法律、行政法规、地方性法规等都不得同宪法相抵触。'},
-  {id:'q14',subject:'law',type:'single',q:'发明专利权的保护期限为（）年。',options:['10','15','20','25'],answer:2,explain:'发明专利权的期限为20年，实用新型专利权的期限为10年，外观设计专利权的期限为15年，均自申请日起计算。'},
-  {id:'q15',subject:'law',type:'single',q:'注册建造师的初始注册有效期为（）年。',options:['1','2','3','5'],answer:2,explain:'注册建造师的初始注册有效期为3年。有效期满需继续执业的，应当在注册有效期届满30日前申请延续注册。'},
-  {id:'q16',subject:'law',type:'single',q:'施工许可证的有效期限为（）个月。',options:['1','2','3','6'],answer:2,explain:'建设单位应当自领取施工许可证之日起3个月内开工。因故不能按期开工的，应当向发证机关申请延期；延期以两次为限，每次不超过3个月。'},
-  {id:'q17',subject:'law',type:'single',q:'招标人对已发出的招标文件进行必要的澄清，应在投标截止时间至少（）日前发出。',options:['3','5','10','15'],answer:3,explain:'招标人对已发出的招标文件进行必要的澄清或者修改的，应当在招标文件要求提交投标文件截止时间至少15日前发出。'},
-  {id:'q18',subject:'law',type:'single',q:'屋面防水工程的最低保修期限为（）年。',options:['2','3','5','10'],answer:2,explain:'屋面防水工程、有防水要求的卫生间、房间和外墙面的防渗漏，最低保修期限为5年。'},
-  {id:'q19',subject:'law',type:'multi',q:'下列情形中，应当认定为工伤的有（）。',options:['工作时间内在工作场所受到事故伤害的','工作时间前后在工作场所从事收尾性工作受到伤害的','在上下班途中受到非本人主要责任的交通事故的','因工作原因患职业病的','醉酒后在工作岗位上受伤的'],answer:[0,1,2,3],explain:'ABCD均属于应当认定为工伤的情形。E项醉酒不得认定为工伤。'},
-  {id:'q20',subject:'law',type:'single',q:'劳动争议仲裁时效期间为（）年。',options:['0.5','1','2','3'],answer:1,explain:'劳动争议申请仲裁的时效期间为1年。仲裁时效期间从当事人知道或者应当知道其权利被侵害之日起计算。'},
-  {id:'q21',subject:'law',type:'single',q:'仲裁实行（）制度。',options:['一裁终局','两裁终局','一裁两审','两审终审'],answer:0,explain:'仲裁实行一裁终局的制度。裁决作出后，当事人就同一纠纷再申请仲裁或者向人民法院起诉的，仲裁委员会或者人民法院不予受理。'},
-  {id:'q22',subject:'law',type:'single',q:'用人单位自用工之日起超过一个月不满一年未与劳动者订立书面劳动合同的，应当向劳动者每月支付（）倍的工资。',options:['1','1.5','2','3'],answer:2,explain:'用人单位自用工之日起超过一个月不满一年未与劳动者订立书面劳动合同的，应当向劳动者每月支付二倍的工资。'},
-  {id:'q23',subject:'law',type:'multi',q:'以下属于投标人相互串通投标情形的有（）。',options:['投标人之间协商投标报价','投标人之间约定中标人','投标人之间约定部分投标人放弃投标','招标人提前开启投标文件泄露给投标人'],answer:[0,1,2],explain:'ABC为投标人之间串通投标。D属于招标人与投标人串通投标的情形。'},
-  {id:'q24',subject:'law',type:'single',q:'投标保证金不得超过招标项目估算价的（）。',options:['1%','2%','3%','5%'],answer:1,explain:'招标人在招标文件中要求投标人提交投标保证金的，投标保证金不得超过招标项目估算价的2%，最高不超过80万元。'},
+  {id:'q13',subject:'law',chapter:'l1',type:'single',q:'在我国法律体系中，法的效力层级最高的是（）。',options:['宪法','法律','行政法规','地方性法规'],answer:0,explain:'宪法具有最高的法律效力，一切法律、行政法规、地方性法规等都不得同宪法相抵触。'},
+  {id:'q14',subject:'law',chapter:'l1',type:'single',q:'发明专利权的保护期限为（）年。',options:['10','15','20','25'],answer:2,explain:'发明专利权的期限为20年，实用新型专利权的期限为10年，外观设计专利权的期限为15年，均自申请日起计算。'},
+  {id:'q15',subject:'law',chapter:'l2',type:'single',q:'注册建造师的初始注册有效期为（）年。',options:['1','2','3','5'],answer:2,explain:'注册建造师的初始注册有效期为3年。有效期满需继续执业的，应当在注册有效期届满30日前申请延续注册。'},
+  {id:'q16',subject:'law',chapter:'l3',type:'single',q:'施工许可证的有效期限为（）个月。',options:['1','2','3','6'],answer:2,explain:'建设单位应当自领取施工许可证之日起3个月内开工。因故不能按期开工的，应当向发证机关申请延期；延期以两次为限，每次不超过3个月。'},
+  {id:'q17',subject:'law',chapter:'l4',type:'single',q:'招标人对已发出的招标文件进行必要的澄清，应在投标截止时间至少（）日前发出。',options:['3','5','10','15'],answer:3,explain:'招标人对已发出的招标文件进行必要的澄清或者修改的，应当在招标文件要求提交投标文件截止时间至少15日前发出。'},
+  {id:'q18',subject:'law',chapter:'l7',type:'single',q:'屋面防水工程的最低保修期限为（）年。',options:['2','3','5','10'],answer:2,explain:'屋面防水工程、有防水要求的卫生间、房间和外墙面的防渗漏，最低保修期限为5年。'},
+  {id:'q19',subject:'law',chapter:'l9',type:'multi',q:'下列情形中，应当认定为工伤的有（）。',options:['工作时间内在工作场所受到事故伤害的','工作时间前后在工作场所从事收尾性工作受到伤害的','在上下班途中受到非本人主要责任的交通事故的','因工作原因患职业病的','醉酒后在工作岗位上受伤的'],answer:[0,1,2,3],explain:'ABCD均属于应当认定为工伤的情形。E项醉酒不得认定为工伤。'},
+  {id:'q20',subject:'law',chapter:'l10',type:'single',q:'劳动争议仲裁时效期间为（）年。',options:['0.5','1','2','3'],answer:1,explain:'劳动争议申请仲裁的时效期间为1年。仲裁时效期间从当事人知道或者应当知道其权利被侵害之日起计算。'},
+  {id:'q21',subject:'law',chapter:'l10',type:'single',q:'仲裁实行（）制度。',options:['一裁终局','两裁终局','一裁两审','两审终审'],answer:0,explain:'仲裁实行一裁终局的制度。裁决作出后，当事人就同一纠纷再申请仲裁或者向人民法院起诉的，仲裁委员会或者人民法院不予受理。'},
+  {id:'q22',subject:'law',chapter:'l9',type:'single',q:'用人单位自用工之日起超过一个月不满一年未与劳动者订立书面劳动合同的，应当向劳动者每月支付（）倍的工资。',options:['1','1.5','2','3'],answer:2,explain:'用人单位自用工之日起超过一个月不满一年未与劳动者订立书面劳动合同的，应当向劳动者每月支付二倍的工资。'},
+  {id:'q23',subject:'law',chapter:'l4',type:'multi',q:'以下属于投标人相互串通投标情形的有（）。',options:['投标人之间协商投标报价','投标人之间约定中标人','投标人之间约定部分投标人放弃投标','招标人提前开启投标文件泄露给投标人'],answer:[0,1,2],explain:'ABC为投标人之间串通投标。D属于招标人与投标人串通投标的情形。'},
+  {id:'q24',subject:'law',chapter:'l4',type:'single',q:'投标保证金不得超过招标项目估算价的（）。',options:['1%','2%','3%','5%'],answer:1,explain:'招标人在招标文件中要求投标人提交投标保证金的，投标保证金不得超过招标项目估算价的2%，最高不超过80万元。'},
 
   // ===== 建筑实务 =====
-  {id:'q25',subject:'practice',type:'single',q:'10层及以上的住宅建筑属于（）。',options:['低层建筑','多层建筑','中高层建筑','高层建筑'],answer:3,explain:'1-3层为低层，4-6层为多层，7-9层为中高层，10层及以上为高层建筑。建筑高度大于100m的为超高层建筑。'},
-  {id:'q26',subject:'practice',type:'single',q:'钢筋混凝土结构的缺点不包括（）。',options:['自重大','抗裂性差','工期较长','不耐久'],answer:3,explain:'钢筋混凝土结构优点是耐久性较好，缺点是自重大、抗裂性差、工期较长。不耐久不是钢筋混凝土结构的缺点。'},
-  {id:'q27',subject:'practice',type:'single',q:'建筑工程竣工验收应当由（）组织。',options:['施工单位','监理单位','建设单位','质量监督站'],answer:2,explain:'建设单位收到建设工程竣工报告后，应当组织设计、施工、工程监理等有关单位进行竣工验收。'},
-  {id:'q28',subject:'practice',type:'single',q:'工程预付款的比例不宜高于合同价款的（）。',options:['10%','20%','25%','30%'],answer:3,explain:'工程预付款的比例不宜高于合同价款的30%。' },
-  {id:'q29',subject:'practice',type:'single',q:'绿色建造的"四节一环保"不包括（）。',options:['节能','节地','节水','节资','节材','环境保护'],answer:3,explain:'四节一环保指：节能、节地、节水、节材和环境保护。节资不属于四节内容。'},
-  {id:'q30',subject:'practice',type:'single',q:'建筑安装工程费按费用构成要素划分，不包括（）。',options:['人工费','材料费','分部分项工程费','企业管理费'],answer:2,explain:'按费用构成要素划分为：人工费、材料费、施工机具使用费、企业管理费、利润、规费和税金。分部分项工程费属于按造价形成划分。'},
-  {id:'q31',subject:'practice',type:'multi',q:'危险性较大的分部分项工程包括（）。',options:['基坑工程','脚手架工程','模板工程','起重吊装工程','混凝土浇筑工程'],answer:[0,1,2,3],explain:'危大工程包括基坑支护与降水工程、土方开挖工程、模板工程及支撑体系、起重吊装及安装拆卸工程、脚手架工程、拆除及爆破工程等。'},
-  {id:'q32',subject:'practice',type:'single',q:'《建筑工程施工质量验收统一标准》的编号是（）。',options:['GB50300-2001','GB50300-2013','GB50300-2019','JGJ59-2011'],answer:1,explain:'《建筑工程施工质量验收统一标准》的编号为GB50300-2013。'},
-  {id:'q33',subject:'practice',type:'single',q:'流水施工的基本组织方式不包括（）。',options:['等节奏流水','异节奏流水','非节奏流水','平行施工'],answer:3,explain:'流水施工的基本组织方式有三种：等节奏流水施工（固定节拍）、异节奏流水施工（成倍节拍）和非节奏流水施工。平行施工不是流水施工的组织方式。'},
-  {id:'q34',subject:'practice',type:'single',q:'超过一定规模的危大工程应当组织（）进行论证。',options:['设计单位','监理单位','专家','建设单位'],answer:2,explain:'超过一定规模的危大工程应当由施工单位组织召开专家论证会，实行施工总承包的由施工总承包单位组织召开。'},
-  {id:'q35',subject:'practice',type:'multi',q:'钢筋混凝土结构的优点包括（）。',options:['强度较高','耐久性较好','可模性好','自重轻'],answer:[0,1,2],explain:'钢筋混凝土结构优点：强度较高、耐久性较好、可模性好。自重轻是钢结构的优点。'},
-  {id:'q36',subject:'practice',type:'single',q:'我国建筑业增值税税率为（）。',options:['6%','9%','10%','13%'],answer:1,explain:'建筑业增值税税率为9%，征收率为3%（简易计税方法）。'}
+  {id:'q25',subject:'practice',chapter:'p1',type:'single',q:'10层及以上的住宅建筑属于（）。',options:['低层建筑','多层建筑','中高层建筑','高层建筑'],answer:3,explain:'1-3层为低层，4-6层为多层，7-9层为中高层，10层及以上为高层建筑。建筑高度大于100m的为超高层建筑。'},
+  {id:'q26',subject:'practice',chapter:'p1',type:'single',q:'钢筋混凝土结构的缺点不包括（）。',options:['自重大','抗裂性差','工期较长','不耐久'],answer:3,explain:'钢筋混凝土结构优点是耐久性较好，缺点是自重大、抗裂性差、工期较长。不耐久不是钢筋混凝土结构的缺点。'},
+  {id:'q27',subject:'practice',chapter:'p2',type:'single',q:'建筑工程竣工验收应当由（）组织。',options:['施工单位','监理单位','建设单位','质量监督站'],answer:2,explain:'建设单位收到建设工程竣工报告后，应当组织设计、施工、工程监理等有关单位进行竣工验收。'},
+  {id:'q28',subject:'practice',chapter:'p2',type:'single',q:'工程预付款的比例不宜高于合同价款的（）。',options:['10%','20%','25%','30%'],answer:3,explain:'工程预付款的比例不宜高于合同价款的30%。' },
+  {id:'q29',subject:'practice',chapter:'p1',type:'single',q:'绿色建造的"四节一环保"不包括（）。',options:['节能','节地','节水','节资','节材','环境保护'],answer:3,explain:'四节一环保指：节能、节地、节水、节材和环境保护。节资不属于四节内容。'},
+  {id:'q30',subject:'practice',chapter:'p2',type:'single',q:'建筑安装工程费按费用构成要素划分，不包括（）。',options:['人工费','材料费','分部分项工程费','企业管理费'],answer:2,explain:'按费用构成要素划分为：人工费、材料费、施工机具使用费、企业管理费、利润、规费和税金。分部分项工程费属于按造价形成划分。'},
+  {id:'q31',subject:'practice',chapter:'p2',type:'multi',q:'危险性较大的分部分项工程包括（）。',options:['基坑工程','脚手架工程','模板工程','起重吊装工程','混凝土浇筑工程'],answer:[0,1,2,3],explain:'危大工程包括基坑支护与降水工程、土方开挖工程、模板工程及支撑体系、起重吊装及安装拆卸工程、脚手架工程、拆除及爆破工程等。'},
+  {id:'q32',subject:'practice',chapter:'p3',type:'single',q:'《建筑工程施工质量验收统一标准》的编号是（）。',options:['GB50300-2001','GB50300-2013','GB50300-2019','JGJ59-2011'],answer:1,explain:'《建筑工程施工质量验收统一标准》的编号为GB50300-2013。'},
+  {id:'q33',subject:'practice',chapter:'p2',type:'single',q:'流水施工的基本组织方式不包括（）。',options:['等节奏流水','异节奏流水','非节奏流水','平行施工'],answer:3,explain:'流水施工的基本组织方式有三种：等节奏流水施工（固定节拍）、异节奏流水施工（成倍节拍）和非节奏流水施工。平行施工不是流水施工的组织方式。'},
+  {id:'q34',subject:'practice',chapter:'p2',type:'single',q:'超过一定规模的危大工程应当组织（）进行论证。',options:['设计单位','监理单位','专家','建设单位'],answer:2,explain:'超过一定规模的危大工程应当由施工单位组织召开专家论证会，实行施工总承包的由施工总承包单位组织召开。'},
+  {id:'q35',subject:'practice',chapter:'p1',type:'multi',q:'钢筋混凝土结构的优点包括（）。',options:['强度较高','耐久性较好','可模性好','自重轻'],answer:[0,1,2],explain:'钢筋混凝土结构优点：强度较高、耐久性较好、可模性好。自重轻是钢结构的优点。'},
+  {id:'q36',subject:'practice',chapter:'p2',type:'single',q:'我国建筑业增值税税率为（）。',options:['6%','9%','10%','13%'],answer:1,explain:'建筑业增值税税率为9%，征收率为3%（简易计税方法）。'}
 ];
 
 // 案例分析题
@@ -353,6 +385,25 @@ const CASE_QUIZZES = [
 ];
 
 // ========== 记忆口诀 ==========
+// ========== 学习资源（B站课程+教材） ==========
+const STUDY_RESOURCES = {
+  // 推荐的B站课程
+  courses: [
+    { title:'二建施工管理精讲', teacher:'环球网校', platform:'B站', url:'https://search.bilibili.com/all?keyword=2026二建施工管理精讲', desc:'系统讲解施工管理7章内容，适合零基础', tag:'免费' },
+    { title:'二建法规精讲班', teacher:'中大网校', platform:'B站', url:'https://search.bilibili.com/all?keyword=2026二建法规精讲', desc:'逐章逐节讲解法规知识，配合真题分析', tag:'免费' },
+    { title:'二建建筑实务精讲', teacher:'建工网校', platform:'B站', url:'https://search.bilibili.com/all?keyword=2026二建建筑实务精讲', desc:'技术+管理+法规三合一，案例题专项突破', tag:'免费' },
+    { title:'二建全科冲刺串讲', teacher:'各大机构', platform:'B站', url:'https://search.bilibili.com/all?keyword=2026二建冲刺串讲', desc:'考前冲刺，高频考点浓缩总结', tag:'免费' },
+    { title:'二建真题解析班', teacher:'名师合集', platform:'B站', url:'https://search.bilibili.com/all?keyword=2026二建真题解析', desc:'近5年真题逐题精讲，掌握出题规律', tag:'免费' },
+    { title:'二建案例专项突破', teacher:'实务名师', platform:'B站', url:'https://search.bilibili.com/all?keyword=二建案例专项突破', desc:'案例题答题模板和高分技巧', tag:'免费' }
+  ],
+  // 每个科目章节对应的建议学习时间（小时）
+  chapterHours: {
+    manage: { m1:4, m2:5, m3:5, m4:4, m5:3, m6:4, m7:2 },
+    law: { l1:4, l2:3, l3:2, l4:4, l5:5, l6:4, l7:4, l8:2, l9:4, l10:3 },
+    practice: { p1:8, p2:8, p3:4 }
+  }
+};
+
 const MNEMONICS = {
   manage: [
     { title:'管理科目主线', tip:'三控三管一协调', detail:'三控：成本控制、进度控制、质量控制；三管：安全管理、合同管理、信息管理；一协调：组织协调。整个施工管理就是围绕这条线展开的。' },
@@ -419,7 +470,8 @@ let state = {
   quizIdx:0, quizSubject:'all', quizType:'all', quizAnswered:{}, quizFavorites: LS.get('favorites',[]),
   examMode:false, examSubject:null, examTimer:null, examTime:0, examAnswers:{}, examStarted:false, examFinished:false,
   history: LS.get('history',[]),
-  progress: LS.get('progress',{manage:{},law:{},practice:{}})
+  progress: LS.get('progress',{manage:{},law:{},practice:{}}),
+  studySubj:'manage', studyChap:null, studyPointIdx:null, learnedChapters: LS.get('learnedChapters',{})
 };
 let currentPage = 'home';
 
@@ -431,15 +483,16 @@ function switchPage(name){
   if(!pg && name==='mnemonics'){ renderMnemonics(); pg=document.getElementById('page-mnemonics'); }
   if(pg) pg.classList.add('active');
   document.querySelectorAll('.nav-item').forEach((n,i)=>{
-    const pages=['home','knowledge','practice','exam','profile'];
+    const pages=['home','study','practice','exam','knowledge','profile'];
     n.classList.toggle('active',pages[i]===name);
   });
   const backBtn = document.getElementById('backBtn');
-  backBtn.style.display = (name==='knowledge' && state.prevPage!=='knowledge') ? 'block' : 'none';
+  backBtn.style.display = (['knowledge','study'].includes(name) && state.prevPage!==name) ? 'block' : 'none';
   document.getElementById('headerTitle').textContent = {
-    home:'二级建造师备考',knowledge:'知识点',practice:'练习题',exam:'模拟考试',profile:'我的',mnemonics:'记忆口诀'
+    home:'二级建造师备考',study:'学习中心',knowledge:'题库',practice:'练习题',exam:'模拟考试',profile:'我的',mnemonics:'记忆口诀'
   }[name];
   if(name==='home') renderHome();
+  else if(name==='study') renderStudy();
   else if(name==='knowledge') renderKnowledge();
   else if(name==='practice') renderPractice();
   else if(name==='exam') renderExam();
@@ -448,6 +501,12 @@ function switchPage(name){
 }
 
 function goBack(){
+  // study page back
+  if(currentPage==='study' && state.studyChap!==null){
+    state.studyChap=null; state.studyPointIdx=null;
+    renderStudy();
+    return;
+  }
   document.querySelectorAll('#page-knowledge .sub-page').forEach(p=>p.style.display='none');
   document.getElementById('kpListPage').style.display='none';
   document.getElementById('kpDetailPage').style.display='none';
@@ -490,11 +549,11 @@ function renderHome(){
       <div class="quick-item" onclick="switchPage('practice')"><div class="qi-icon">📝</div><div class="qi-text">开始练习</div></div>
       <div class="quick-item" onclick="switchPage('exam')"><div class="qi-icon">⏱️</div><div class="qi-text">模拟考试</div></div>
       <div class="quick-item" onclick="showFavorites()"><div class="qi-icon">⭐</div><div class="qi-text">收藏错题</div></div>
-      <div class="quick-item" onclick="switchPage('knowledge')"><div class="qi-icon">📚</div><div class="qi-text">知识点</div></div>
+      <div class="quick-item" onclick="switchPage('study')"><div class="qi-icon">📖</div><div class="qi-text">学习中心</div></div>
       <div class="quick-item" onclick="switchPage('mnemonics')"><div class="qi-icon">🧠</div><div class="qi-text">记忆口诀</div></div>
       <div class="quick-item" onclick="switchPage('profile')"><div class="qi-icon">👤</div><div class="qi-text">我的</div></div>
       <div class="quick-item" onclick="randomQuiz()"><div class="qi-icon">🎲</div><div class="qi-text">随机抽查</div></div>
-      <div class="quick-item" onclick="switchPage('knowledge')"><div class="qi-icon">📖</div><div class="qi-text">错题回顾</div></div>
+      <div class="quick-item" onclick="switchPage('knowledge')"><div class="qi-icon">📚</div><div class="qi-text">知识题库</div></div>
     </div>
     ${renderProgressCards()}
   `;
@@ -971,6 +1030,7 @@ function renderProfile(){
       <div class="stat-item"><div class="stat-num">${totalFav}</div><div class="stat-label">收藏题目</div></div>
       <div class="stat-item"><div class="stat-num">${historyCount}</div><div class="stat-label">模考次数</div></div>
     </div>
+    <div class="setting-item" onclick="switchPage('study')"><div class="si-left"><span class="si-icon">📖</span><span class="si-text">学习进度 (${Object.values(state.learnedChapters).flat().length}章已学)</span></div><span style="color:var(--text-lighter)">›</span></div>
     <div class="setting-item" onclick="showFavorites()"><div class="si-left"><span class="si-icon">⭐</span><span class="si-text">收藏错题本 (${totalFav})</span></div><span style="color:var(--text-lighter)">›</span></div>
     <div class="setting-item" onclick="switchPage('knowledge')"><div class="si-left"><span class="si-icon">📊</span><span class="si-text">学习进度</span></div><span style="color:var(--text-lighter)">›</span></div>
     <div class="setting-item" onclick="switchPage('exam')"><div class="si-left"><span class="si-icon">📋</span><span class="si-text">模考历史</span></div><span style="color:var(--text-lighter)">›</span></div>
@@ -981,8 +1041,8 @@ function renderProfile(){
 function clearAllData(){
   if(!confirm('确定要清除所有学习数据吗？此操作不可恢复！')) return;
   Object.keys(localStorage).filter(k=>k.startsWith('ej_')).forEach(k=>localStorage.removeItem(k));
-  state.quizAnswered={}; state.quizFavorites=[]; state.history=[]; state.progress={manage:{},law:{},practice:{}};
-  LS.set('favorites',[]); LS.set('history',[]); LS.set('progress',state.progress);
+  state.quizAnswered={}; state.quizFavorites=[]; state.history=[]; state.progress={manage:{},law:{},practice:{}}; state.learnedChapters={};
+  LS.set('favorites',[]); LS.set('history',[]); LS.set('progress',state.progress); LS.set('learnedChapters',state.learnedChapters);
   renderProfile();
   alert('数据已清除！');
 }
@@ -996,6 +1056,173 @@ function showModal(html){
 }
 function closeModal(){
   document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// ========== 学习中心 ==========
+function renderStudy(){
+  state.studyChap=null; state.studyPointIdx=null;
+  const pg=document.getElementById('page-study');
+  const sub=SUBJECTS.find(s=>s.id===state.studySubj);
+  const chapters=CHAPTERS[state.studySubj]||[];
+  const learned=state.learnedChapters[state.studySubj]||[];
+  const totalCh=chapters.length;
+  const doneCh=learned.length;
+  const hours=(STUDY_RESOURCES.chapterHours[state.studySubj]||{});
+  const totalH=Object.values(hours).reduce((a,b)=>a+b,0);
+
+  pg.innerHTML=`
+    <div class="tabs" id="studyTabs">${SUBJECTS.map((s,i)=>`<div class="tab ${i===SUBJECTS.findIndex(x=>x.id===state.studySubj)?'active':''}" onclick="switchStudySubj('${s.id}')">${s.short}</div>`).join('')}</div>
+    <div class="card" style="background:${sub.color}11;border-left:4px solid ${sub.color};padding:14px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:600;font-size:15px">${sub.name}</div><div style="font-size:12px;color:var(--text-light);margin-top:2px">共${totalCh}章 · 约${totalH}学时 · ${sub.examInfo}</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:700;color:${sub.color}">${doneCh}/${totalCh}</div><div style="font-size:10px;color:var(--text-light)">已完成</div></div>
+      </div>
+      <div class="progress-bar" style="margin-top:10px"><div class="fill" style="width:${totalCh>0?Math.round(doneCh/totalCh*100):0}%;background:${sub.color}"></div></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px">
+      <button class="btn btn-sm btn-primary" onclick="showCourseList()" style="white-space:nowrap">📺 B站课程</button>
+      <button class="btn btn-sm btn-outline" onclick="showMnemonicFromStudy()" style="white-space:nowrap">🧠 记忆口诀</button>
+      <button class="btn btn-sm btn-outline" onclick="startQuizFromStudy()" style="white-space:nowrap">📝 章节练习</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-light);margin-bottom:10px">📖 点击章节开始学习，按顺序或自选皆可</div>
+    ${chapters.map((ch,i)=>{
+      const isDone=learned.includes(ch.id);
+      const h=hours[ch.id]||0;
+      return `<div class="study-chapter ${isDone?'completed':''}" onclick="openStudyChapter('${state.studySubj}','${ch.id}')">
+        <div class="sc-left" style="background:${isDone?'var(--success)':sub.color}22;color:${isDone?'var(--success)':sub.color}">${i+1}</div>
+        <div class="sc-right"><h4>${ch.name}</h4><p>${ch.desc} · 约${h}学时${isDone?' · ✅ 已学':''}</p></div>
+        <div class="sc-check ${isDone?'done':''}">${isDone?'✓':''}</div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+function switchStudySubj(id){
+  state.studySubj=id;
+  renderStudy();
+  // update tab active
+  document.querySelectorAll('#studyTabs .tab').forEach((t,i)=>{
+    t.classList.toggle('active',SUBJECTS[i].id===id);
+  });
+}
+
+function openStudyChapter(subjId, chapId){
+  state.studyChap=chapId;
+  const sub=SUBJECTS.find(s=>s.id===subjId);
+  const chapters=CHAPTERS[subjId]||[];
+  const ch=chapters.find(c=>c.id===chapId);
+  if(!ch) return;
+  const pg=document.getElementById('page-study');
+  const learned=state.learnedChapters[subjId]||[];
+
+  pg.innerHTML=`
+    <div class="card" style="border-left:4px solid ${sub.color}">
+      <div style="font-size:12px;color:${sub.color};font-weight:600;margin-bottom:6px">${sub.name}</div>
+      <h3 style="font-size:17px;font-weight:700">${ch.name}</h3>
+      <p style="font-size:13px;color:var(--text-light);margin-top:4px">${ch.desc}</p>
+    </div>
+    <div style="font-size:14px;font-weight:600;margin:12px 0 8px">📖 知识点详解（${ch.points.length}个）</div>
+    ${ch.points.map((pt,i)=>`
+      <div class="study-point-card" style="border-left-color:${sub.color}">
+        <h3>${i+1}. ${pt.title}</h3>
+        <div class="sp-desc">${pt.desc}</div>
+        <div class="sp-detail">${pt.detail}</div>
+      </div>
+    `).join('')}
+    <div class="study-nav-btns">
+      ${!learned.includes(chapId)?`<button class="btn btn-primary" onclick="markChapterLearned('${subjId}','${chapId}')">✅ 标记为已学完</button>`:''}
+      <button class="btn btn-outline" onclick="startQuizForChapter('${subjId}','${chapId}')">📝 做本章练习</button>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn btn-sm btn-outline" onclick="renderStudy()">← 返回章节列表</button>
+    </div>
+  `;
+
+  // update header
+  document.getElementById('headerTitle').textContent=ch.name;
+  document.getElementById('backBtn').style.display='block';
+  // scroll to top
+  window.scrollTo(0,0);
+}
+
+function markChapterLearned(subjId, chapId){
+  if(!state.learnedChapters[subjId]) state.learnedChapters[subjId]=[];
+  if(!state.learnedChapters[subjId].includes(chapId)){
+    state.learnedChapters[subjId].push(chapId);
+    LS.set('learnedChapters', state.learnedChapters);
+    // also mark all points as read in knowledge progress
+    const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
+    if(ch) ch.points.forEach(p=>{ state.progress[subjId][p.title]=true; LS.set('progress',state.progress); });
+    openStudyChapter(subjId, chapId);
+  }
+}
+
+function startQuizForChapter(subjId, chapId){
+  const quizzes=QUIZZES.filter(q=>q.subject===subjId && q.chapter===chapId);
+  if(quizzes.length===0){
+    alert('本章暂无练习题，后续会持续更新！');
+    return;
+  }
+  state.quizSubject=subjId;
+  state.quizType='all';
+  switchPage('practice');
+  setTimeout(()=>{
+    const list=document.getElementById('quizList');
+    if(list) list.innerHTML=quizzes.map(q=>{
+      const sub=SUBJECTS.find(s=>s.id===q.subject);
+      return `<div class="quiz-card">
+        <div class="quiz-num"><span class="tag ${q.type==='single'?'tag-primary':'tag-warning'}">${q.type==='single'?'单选':'多选'}</span></div>
+        <div class="quiz-q">${q.q}</div>
+        <div class="quiz-options">${q.options.map((o,i)=>`<div class="quiz-opt" onclick="selectOption('${q.id}',${i},'${q.type}')"><span class="opt-label">${'ABCDEFGH'[i]}</span><span>${o}</span></div>`).join('')}</div>
+        <div class="quiz-explain"><strong>📝 解析：</strong>${q.explain}</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn-sm btn-primary" onclick="submitAnswer('${q.id}')">提交答案</button>
+          <button class="btn btn-sm ${state.quizFavorites.includes(q.id)?'btn-danger':'btn-outline'}" onclick="toggleFav('${q.id}')">${state.quizFavorites.includes(q.id)?'取消收藏':'收藏 ⭐'}</button>
+        </div>
+      </div>`;
+    }).join('');
+  },100);
+}
+
+function showCourseList(){
+  const pg=document.getElementById('page-study');
+  document.getElementById('headerTitle').textContent='推荐课程';
+  document.getElementById('backBtn').style.display='block';
+  window.scrollTo(0,0);
+  pg.innerHTML=`
+    <div style="font-size:14px;color:var(--text-light);margin-bottom:12px">📺 以下课程均可在B站免费观看，建议按需选择</div>
+    ${STUDY_RESOURCES.courses.map(c=>`
+      <a class="resource-link" href="${c.url}" target="_blank" rel="noopener">
+        <div class="rl-icon" style="background:linear-gradient(135deg,#fb7299,#fc9db7);color:#fff">📺</div>
+        <div class="rl-text">
+          <h4>${c.title}</h4>
+          <p>${c.teacher} · ${c.desc}</p>
+        </div>
+        <span style="font-size:11px;padding:2px 8px;border-radius:10px;background:#fb729922;color:#fb7299;font-weight:500;white-space:nowrap">${c.tag}</span>
+      </a>
+    `).join('')}
+    <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:var(--radius-sm);font-size:13px;color:var(--text-light);line-height:1.8">
+      <strong style="color:var(--text)">💡 学习建议：</strong><br>
+      1. 先看精讲班，系统过一遍知识点<br>
+      2. 学完一章就做对应练习巩固<br>
+      3. 考前1个月看冲刺串讲<br>
+      4. 临考前做真题，查漏补缺
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn btn-sm btn-outline" onclick="renderStudy()">← 返回学习中心</button>
+    </div>
+  `;
+}
+
+function showMnemonicFromStudy(){
+  state.studySubj_bak=state.studySubj;
+  switchPage('mnemonics');
+}
+
+function startQuizFromStudy(){
+  state.quizSubject=state.studySubj;
+  state.quizType='all';
+  switchPage('practice');
 }
 
 // ========== 记忆口诀 ==========

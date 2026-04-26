@@ -639,6 +639,7 @@ function showKpDetail(subj,chId,idx){
   state.progress[subj]=state.progress[subj]||{};
   state.progress[subj][chId+'_'+idx]=true;
   LS.set('progress',state.progress);
+  CloudSync.schedulePush();
   document.getElementById('kpListPage').style.display='none';
   const pg=document.getElementById('kpDetailPage');
   pg.style.display='block';
@@ -753,6 +754,7 @@ function submitAnswer(qid){
   state.quizAnswered[qid]=sel;
   delete tempSel[qid];
   renderQuizList();
+  CloudSync.schedulePush();
 }
 
 function toggleFav(qid){
@@ -761,6 +763,7 @@ function toggleFav(qid){
   else state.quizFavorites.push(qid);
   LS.set('favorites',state.quizFavorites);
   renderQuizList();
+  CloudSync.schedulePush();
 }
 
 function showFavorites(){
@@ -963,6 +966,7 @@ function finishExam(){
   const sub=SUBJECTS.find(s=>s.id===state.examSubject);
   state.history.push({name:sub.name,score:score+'/'+totalScore,date:new Date().toLocaleDateString()});
   LS.set('history',state.history);
+  CloudSync.schedulePush();
   const pct=Math.round(score/totalScore*100);
   renderExamResult(score,totalScore,correct,wrong,unanswered,pct);
 }
@@ -1041,6 +1045,21 @@ function renderProfile(){
     <div class="setting-item" onclick="showFavorites()"><div class="si-left"><span class="si-icon">⭐</span><span class="si-text">收藏错题本 (${totalFav})</span></div><span style="color:var(--text-lighter)">›</span></div>
     <div class="setting-item" onclick="switchPage('knowledge')"><div class="si-left"><span class="si-icon">📊</span><span class="si-text">学习进度</span></div><span style="color:var(--text-lighter)">›</span></div>
     <div class="setting-item" onclick="switchPage('exam')"><div class="si-left"><span class="si-icon">📋</span><span class="si-text">模考历史</span></div><span style="color:var(--text-lighter)">›</span></div>
+    <div style="margin-top:16px;padding:16px;background:linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.05));border-radius:var(--radius-sm)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px">☁️ 云端数据同步</div>
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:10px;line-height:1.6">手机和电脑输入同一「同步码」即可同步学习进度。打开App时自动拉取，学习时自动上传。</div>
+      <div id="syncStatus" style="font-size:12px;margin-bottom:10px;padding:6px 10px;background:var(--card);border-radius:4px;display:flex;align-items:center">
+        <span style="color:var(--text-light)">${CloudSync.getSyncId()?'☁️ 已绑定同步码':'☁️ 未绑定'}</span>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" onclick="cloudPull()" style="flex:1">⬇️ 拉取云端</button>
+        <button class="btn btn-sm btn-outline" onclick="cloudPush()" style="flex:1">⬆️ 上传到云端</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-outline" onclick="showSyncCode()" style="flex:1">🔑 查看同步码</button>
+        <button class="btn btn-sm btn-outline" onclick="inputSyncCode()" style="flex:1">📥 输入同步码</button>
+      </div>
+    </div>
     <div class="setting-item" onclick="clearAllData()" style="margin-top:20px"><div class="si-left"><span class="si-icon">🗑️</span><span class="si-text" style="color:var(--danger)">清除所有数据</span></div><span style="color:var(--text-lighter)">›</span></div>
   `;
 }
@@ -1052,6 +1071,81 @@ function clearAllData(){
   LS.set('favorites',[]); LS.set('history',[]); LS.set('progress',state.progress); LS.set('learnedChapters',state.learnedChapters);
   renderProfile();
   alert('数据已清除！');
+}
+
+// ========== 云同步UI函数 ==========
+async function cloudPull(){
+  CloudSync._showSyncStatus('cloud syncing');
+  const result = await CloudSync.pull();
+  if(result === 'merged'){
+    showModal(`<div class="modal-title">✅ 同步成功</div><div style="padding:12px 0;font-size:14px;line-height:1.8">已从云端合并最新数据：<br>• 学习进度、已学章节<br>• 收藏题目<br>• 做题记录<br>• 模考历史<br><br>页面将自动刷新。</div><button class="btn btn-primary btn-block" onclick="closeModal();location.reload()">确定</button>`);
+  } else if(result === 'uptodate'){
+    showModal(`<div class="modal-title">已是最新</div><div style="padding:12px 0;font-size:14px">本地数据与云端一致，无需合并。</div><button class="btn btn-primary btn-block" onclick="closeModal()">确定</button>`);
+  } else {
+    CloudSync._showSyncStatus('cloud_error');
+    showModal(`<div class="modal-title">⚠️ 拉取失败</div><div style="padding:12px 0;font-size:14px">请检查网络连接，或确认已绑定同步码。</div><button class="btn btn-primary btn-block" onclick="closeModal()">确定</button>`);
+  }
+}
+
+async function cloudPush(){
+  CloudSync._showSyncStatus('cloud syncing');
+  const ok = await CloudSync.push();
+  if(ok){
+    showModal(`<div class="modal-title">✅ 上传成功</div><div style="padding:12px 0;font-size:14px">学习数据已上传到云端。在其他设备上点击「拉取云端」即可同步。</div><button class="btn btn-primary btn-block" onclick="closeModal()">确定</button>`);
+  } else {
+    CloudSync._showSyncStatus('cloud_error');
+    showModal(`<div class="modal-title">⚠️ 上传失败</div><div style="padding:12px 0;font-size:14px">请检查网络连接后重试。</div><button class="btn btn-primary btn-block" onclick="closeModal()">确定</button>`);
+  }
+}
+
+function showSyncCode(){
+  const binId = CloudSync.getSyncId();
+  if(!binId){
+    showModal(`<div class="modal-title">🔑 同步码</div><div style="padding:12px 0;font-size:14px;text-align:center">还没有同步码，<br>点击「上传到云端」会自动生成。</div><button class="btn btn-primary btn-block" onclick="closeModal()">确定</button>`);
+    return;
+  }
+  showModal(`<div class="modal-title">🔑 你的同步码</div>
+    <div style="text-align:center;padding:16px 0">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:8px">在另一台设备输入此码即可同步</div>
+      <div style="font-family:monospace;font-size:16px;font-weight:700;letter-spacing:1px;padding:12px;background:var(--primary);color:#fff;border-radius:8px;word-break:break-all;user-select:all">${binId}</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-outline" style="flex:1" onclick="navigator.clipboard.writeText('${binId}');this.textContent='已复制!'">📋 复制</button>
+      <button class="btn btn-primary" style="flex:1" onclick="closeModal()">确定</button>
+    </div>`);
+}
+
+function inputSyncCode(){
+  showModal(`<div class="modal-title">📥 输入同步码</div>
+    <div style="padding:12px 0">
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">输入另一台设备上的同步码，合并两台设备的学习数据。</div>
+      <input id="syncCodeInput" type="text" placeholder="粘贴同步码..." style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:monospace;box-sizing:border-box">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-outline" style="flex:1" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" style="flex:1" onclick="doBindSyncCode()">绑定并拉取</button>
+    </div>`);
+  setTimeout(()=>{const inp=document.getElementById('syncCodeInput');if(inp)inp.focus();},100);
+}
+
+async function doBindSyncCode(){
+  const inp = document.getElementById('syncCodeInput');
+  const code = inp ? inp.value.trim() : '';
+  if(!code){ alert('请输入同步码'); return; }
+  CloudSync._showSyncStatus('cloud syncing');
+  const ok = await CloudSync.bindBin(code);
+  if(ok){
+    closeModal();
+    const result = await CloudSync.pull();
+    if(result === 'merged'){
+      showModal(`<div class="modal-title">✅ 绑定并同步成功！</div><div style="padding:12px 0;font-size:14px">已合并云端数据，页面将刷新。</div><button class="btn btn-primary btn-block" onclick="closeModal();location.reload()">确定</button>`);
+    } else {
+      showModal(`<div class="modal-title">✅ 绑定成功</div><div style="padding:12px 0;font-size:14px">同步码已绑定，云端数据已是最新。</div><button class="btn btn-primary btn-block" onclick="closeModal();renderProfile()">确定</button>`);
+    }
+  } else {
+    CloudSync._showSyncStatus('cloud_error');
+    alert('同步码无效或网络错误，请检查后重试。');
+  }
 }
 
 // ========== 工具函数 ==========
@@ -1202,6 +1296,7 @@ function markChapterLearned(subjId, chapId){
     // also mark all points as read in knowledge progress
     const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
     if(ch) ch.points.forEach(p=>{ state.progress[subjId][p.title]=true; LS.set('progress',state.progress); });
+    CloudSync.schedulePush();
   }
   // 显示下一步引导
   const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
@@ -1374,8 +1469,191 @@ function randomQuiz(){
   }).join('');
 }
 
+// ========== 云同步模块 ==========
+const CloudSync = {
+  API_URL: 'https://api.jsonbin.io/v3',
+  API_KEY: '$2a$10$LGV0vYiN3oB8J3mWXC1bCeuGXB9yGqDPcPt0MQhGwSvKFfLoLgKia', // 免费 bin master key
+  BIN_ID_KEY: 'ej_sync_binid',
+  lastSync: 0,
+  syncing: false,
+
+  // 获取或创建 bin
+  async getBinId(){
+    let binId = localStorage.getItem(this.BIN_ID_KEY);
+    if(binId) return binId;
+    // 创建新 bin
+    try {
+      const resp = await fetch(`${this.API_URL}/b`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': this.API_KEY },
+        body: JSON.stringify(this._collectData())
+      });
+      const data = await resp.json();
+      if(data.success && data.metadata && data.metadata.id){
+        binId = data.metadata.id;
+        localStorage.setItem(this.BIN_ID_KEY, binId);
+        return binId;
+      }
+    } catch(e){ console.warn('创建bin失败:', e); }
+    return null;
+  },
+
+  // 用已有 binId 绑定
+  async bindBin(binId){
+    try {
+      const resp = await fetch(`${this.API_URL}/b/${binId}/latest`, {
+        headers: { 'X-Master-Key': this.API_KEY }
+      });
+      if(resp.ok) {
+        localStorage.setItem(this.BIN_ID_KEY, binId);
+        return true;
+      }
+    } catch(e){}
+    return false;
+  },
+
+  // 收集需要同步的数据
+  _collectData(){
+    return {
+      version: 1,
+      timestamp: Date.now(),
+      progress: LS.get('progress', {manage:{},law:{},practice:{}}),
+      learnedChapters: LS.get('learnedChapters', {}),
+      favorites: LS.get('favorites', []),
+      history: LS.get('history', []),
+      quizAnswered: LS.get('quizAnswered', {})
+    };
+  },
+
+  // 上传到云端
+  async push(){
+    const binId = await this.getBinId();
+    if(!binId) return false;
+    try {
+      const resp = await fetch(`${this.API_URL}/b/${binId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': this.API_KEY },
+        body: JSON.stringify(this._collectData())
+      });
+      if(resp.ok){
+        this.lastSync = Date.now();
+        this._showSyncStatus('cloud_synced');
+        return true;
+      }
+    } catch(e){ console.warn('上传失败:', e); }
+    return false;
+  },
+
+  // 从云端拉取
+  async pull(){
+    const binId = await this.getBinId();
+    if(!binId) return false;
+    try {
+      const resp = await fetch(`${this.API_URL}/b/${binId}/latest`, {
+        headers: { 'X-Master-Key': this.API_KEY }
+      });
+      if(!resp.ok) return false;
+      const data = await resp.json();
+      const record = data.record;
+      if(!record || !record.version) return false;
+
+      // 合并数据 - 以云端较新数据为准，合并两端的记录
+      let merged = false;
+      if(record.progress){
+        const local = state.progress;
+        for(const subj in record.progress){
+          if(!local[subj]) local[subj]={};
+          for(const k in record.progress[subj]){
+            if(record.progress[subj][k] && !local[subj][k]){
+              local[subj][k] = true; merged = true;
+            }
+          }
+        }
+      }
+      if(record.learnedChapters){
+        for(const subj in record.learnedChapters){
+          if(!state.learnedChapters[subj]) state.learnedChapters[subj]=[];
+          record.learnedChapters[subj].forEach(ch=>{
+            if(!state.learnedChapters[subj].includes(ch)){
+              state.learnedChapters[subj].push(ch); merged = true;
+            }
+          });
+        }
+      }
+      if(record.favorites){
+        record.favorites.forEach(f=>{
+          if(!state.quizFavorites.includes(f)){
+            state.quizFavorites.push(f); merged = true;
+          }
+        });
+      }
+      if(record.quizAnswered){
+        for(const k in record.quizAnswered){
+          if(!(k in state.quizAnswered)){
+            state.quizAnswered[k] = record.quizAnswered[k]; merged = true;
+          }
+        }
+      }
+      if(record.history){
+        record.history.forEach(h=>{
+          if(!state.history.find(x=>x.date===h.date && x.subject===h.subject)){
+            state.history.push(h); merged = true;
+          }
+        });
+      }
+
+      if(merged){
+        LS.set('progress', state.progress);
+        LS.set('learnedChapters', state.learnedChapters);
+        LS.set('favorites', state.quizFavorites);
+        LS.set('history', state.history);
+        LS.set('quizAnswered', state.quizAnswered);
+      }
+      this.lastSync = Date.now();
+      this._showSyncStatus(merged ? 'cloud_merged' : 'cloud_uptodate');
+      return merged ? 'merged' : 'uptodate';
+    } catch(e){ console.warn('拉取失败:', e); }
+    return false;
+  },
+
+  // 防抖自动推送
+  schedulePush(){
+    clearTimeout(this._pushTimer);
+    this._pushTimer = setTimeout(()=>this.push(), 3000);
+  },
+
+  _showSyncStatus(type){
+    const el = document.getElementById('syncStatus');
+    if(!el) return;
+    const msgs = {
+      'cloud_synced': {icon:'☁️', text:'已同步', color:'var(--success)'},
+      'cloud_merged': {icon:'☁️', text:`已合并 ${new Date().toLocaleTimeString()}`, color:'var(--primary)'},
+      'cloud_uptodate': {icon:'☁️', text:'已是最新', color:'var(--text-light)'},
+      'cloud_error': {icon:'⚠️', text:'同步失败', color:'var(--danger)'},
+      'cloud syncing': {icon:'⏳', text:'同步中...', color:'var(--text-light)'}
+    };
+    const m = msgs[type] || msgs['cloud_uptodate'];
+    el.innerHTML = `<span style="margin-right:4px">${m.icon}</span>${m.text}`;
+    el.style.color = m.color;
+  },
+
+  getSyncId(){
+    return localStorage.getItem(this.BIN_ID_KEY) || '';
+  }
+};
+
 // ========== 初始化 ==========
-document.addEventListener('DOMContentLoaded',()=>{ renderHome(); });
+document.addEventListener('DOMContentLoaded',()=>{
+  renderHome();
+  // 首次启动自动从云端拉取
+  if(CloudSync.getSyncId()){
+    CloudSync.pull().then(res=>{
+      if(res==='merged'){
+        renderHome(); // 有新数据则刷新首页
+      }
+    });
+  }
+});
 
 </script>
 </body>

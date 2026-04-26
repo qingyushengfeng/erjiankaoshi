@@ -545,15 +545,22 @@ function renderHome(){
       <div class="dq-text">"${quote.text}"</div>
       <div class="dq-from">—— ${quote.from}</div>
     </div>
+    <div style="background:linear-gradient(90deg,rgba(102,126,234,.12),rgba(118,75,162,.08));border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:4px">📋 推荐备考流程</div>
+        <div style="font-size:11px;color:var(--text-light);line-height:1.7">① 学习知识点 &nbsp;→&nbsp; ② 记住口诀 &nbsp;→&nbsp; ③ 章节练习 &nbsp;→&nbsp; ④ 模拟考试</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="switchPage('study')" style="white-space:nowrap;margin-left:10px">开始学习 →</button>
+    </div>
     <div class="quick-grid">
-      <div class="quick-item" onclick="switchPage('practice')"><div class="qi-icon">📝</div><div class="qi-text">开始练习</div></div>
-      <div class="quick-item" onclick="switchPage('exam')"><div class="qi-icon">⏱️</div><div class="qi-text">模拟考试</div></div>
-      <div class="quick-item" onclick="showFavorites()"><div class="qi-icon">⭐</div><div class="qi-text">收藏错题</div></div>
       <div class="quick-item" onclick="switchPage('study')"><div class="qi-icon">📖</div><div class="qi-text">学习中心</div></div>
       <div class="quick-item" onclick="switchPage('mnemonics')"><div class="qi-icon">🧠</div><div class="qi-text">记忆口诀</div></div>
-      <div class="quick-item" onclick="switchPage('profile')"><div class="qi-icon">👤</div><div class="qi-text">我的</div></div>
+      <div class="quick-item" onclick="switchPage('practice')"><div class="qi-icon">📝</div><div class="qi-text">章节练习</div></div>
+      <div class="quick-item" onclick="switchPage('exam')"><div class="qi-icon">⏱️</div><div class="qi-text">模拟考试</div></div>
+      <div class="quick-item" onclick="showFavorites()"><div class="qi-icon">⭐</div><div class="qi-text">收藏错题</div></div>
       <div class="quick-item" onclick="randomQuiz()"><div class="qi-icon">🎲</div><div class="qi-text">随机抽查</div></div>
       <div class="quick-item" onclick="switchPage('knowledge')"><div class="qi-icon">📚</div><div class="qi-text">知识题库</div></div>
+      <div class="quick-item" onclick="switchPage('profile')"><div class="qi-icon">👤</div><div class="qi-text">我的</div></div>
     </div>
     ${renderProgressCards()}
   `;
@@ -1079,6 +1086,34 @@ function renderStudy(){
       </div>
       <div class="progress-bar" style="margin-top:10px"><div class="fill" style="width:${totalCh>0?Math.round(doneCh/totalCh*100):0}%;background:${sub.color}"></div></div>
     </div>
+    <div style="background:linear-gradient(90deg,rgba(102,126,234,.08),rgba(118,75,162,.05));border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:8px;letter-spacing:.5px">📋 本科目学习流程</div>
+      <div style="display:flex;align-items:center;gap:0;font-size:12px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:56px">
+          <div style="width:36px;height:36px;border-radius:50%;background:${doneCh>0?'var(--success)':'var(--primary)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px">①</div>
+          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:center">学知识点</div>
+          <div style="font-size:10px;font-weight:600;color:${doneCh>0?'var(--success)':'var(--primary)'}">${doneCh}/${totalCh}</div>
+        </div>
+        <div style="flex:1;height:2px;background:${doneCh>0?'var(--success)':'var(--border)'};min-width:12px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:56px">
+          <div style="width:36px;height:36px;border-radius:50%;background:${doneCh>0?'var(--warning)':'var(--border)'};color:${doneCh>0?'#fff':'var(--text-lighter)'};display:flex;align-items:center;justify-content:center;font-size:14px">②</div>
+          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:center">记忆口诀</div>
+          <div style="font-size:10px;color:var(--text-lighter)">强化记忆</div>
+        </div>
+        <div style="flex:1;height:2px;background:var(--border);min-width:12px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:56px">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--border);color:var(--text-lighter);display:flex;align-items:center;justify-content:center;font-size:14px">③</div>
+          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:center">章节练习</div>
+          <div style="font-size:10px;color:var(--text-lighter)">巩固知识</div>
+        </div>
+        <div style="flex:1;height:2px;background:var(--border);min-width:12px"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:56px">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--border);color:var(--text-lighter);display:flex;align-items:center;justify-content:center;font-size:14px">④</div>
+          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:center">模拟考试</div>
+          <div style="font-size:10px;color:var(--text-lighter)">冲刺备考</div>
+        </div>
+      </div>
+    </div>
     <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px">
       <button class="btn btn-sm btn-primary" onclick="showCourseList()" style="white-space:nowrap">📺 B站课程</button>
       <button class="btn btn-sm btn-outline" onclick="showMnemonicFromStudy()" style="white-space:nowrap">🧠 记忆口诀</button>
@@ -1129,9 +1164,23 @@ function openStudyChapter(subjId, chapId){
         <div class="sp-detail">${pt.detail}</div>
       </div>
     `).join('')}
+    ${(()=>{
+      const mnems=(MNEMONICS[subjId]||[]).filter(m=>ch.points.some(pt=>m.title.includes(pt.title.substring(0,4))||m.detail.includes(pt.title.substring(0,4))||pt.detail.includes(m.tip)));
+      if(!mnems.length) return '';
+      return `<div style="margin:16px 0 8px;font-size:14px;font-weight:600">🧠 本章记忆口诀</div>
+        ${mnems.map((m,mi)=>`<div class="card" style="border-left:4px solid ${sub.color};cursor:pointer;background:${mi===0?'linear-gradient(135deg,rgba(102,126,234,.06),rgba(118,75,162,.04))':'var(--card)'}" onclick="this.querySelector('.mn-detail').style.display=this.querySelector('.mn-detail').style.display==='none'?'block':'none'">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:14px;font-weight:600">💡 ${m.title}</div>
+            <span class="tag tag-warning" style="font-size:10px;white-space:nowrap">${m.tip}</span>
+          </div>
+          <div class="mn-detail" style="display:${mi===0?'block':'none'};margin-top:8px;font-size:13px;line-height:1.8;color:var(--text)">${m.detail}</div>
+        </div>`).join('')}`;
+
+    })()}
     <div class="study-nav-btns">
-      ${!learned.includes(chapId)?`<button class="btn btn-primary" onclick="markChapterLearned('${subjId}','${chapId}')">✅ 标记为已学完</button>`:''}
-      <button class="btn btn-outline" onclick="startQuizForChapter('${subjId}','${chapId}')">📝 做本章练习</button>
+      ${!learned.includes(chapId)?`<button class="btn btn-primary" onclick="markChapterLearned('${subjId}','${chapId}')">✅ 标记已学完</button>`:'<div style="font-size:13px;color:var(--success);display:flex;align-items:center;gap:4px">✅ 已学完</div>'}
+      <button class="btn btn-outline" onclick="showChapterMnemonics('${subjId}','${chapId}')">🧠 全部口诀</button>
+      <button class="btn btn-outline" onclick="startQuizForChapter('${subjId}','${chapId}')">📝 章节练习</button>
     </div>
     <div style="margin-top:12px">
       <button class="btn btn-sm btn-outline" onclick="renderStudy()">← 返回章节列表</button>
@@ -1153,8 +1202,51 @@ function markChapterLearned(subjId, chapId){
     // also mark all points as read in knowledge progress
     const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
     if(ch) ch.points.forEach(p=>{ state.progress[subjId][p.title]=true; LS.set('progress',state.progress); });
-    openStudyChapter(subjId, chapId);
   }
+  // 显示下一步引导
+  const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
+  const sub=SUBJECTS.find(s=>s.id===subjId);
+  const mnems=(MNEMONICS[subjId]||[]).filter(m=>ch.points.some(pt=>m.title.includes(pt.title.substring(0,4))||m.detail.includes(pt.title.substring(0,4))||pt.detail.includes(m.tip)));
+  showModal(`
+    <div class="modal-title">🎉 章节学完了！<span class="modal-close" onclick="closeModal();openStudyChapter('${subjId}','${chapId}')">✕</span></div>
+    <div style="text-align:center;padding:8px 0 16px">
+      <div style="font-size:36px;margin-bottom:8px">🎊</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:4px">${ch.name}</div>
+      <div style="font-size:13px;color:var(--text-light)">知识点已全部学习，接下来做什么？</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary btn-block" onclick="closeModal();showChapterMnemonics('${subjId}','${chapId}')">
+        🧠 查看本章口诀（${mnems.length}条）
+      </button>
+      <button class="btn btn-outline btn-block" onclick="closeModal();startQuizForChapter('${subjId}','${chapId}')">
+        📝 做本章练习题
+      </button>
+      <button class="btn btn-sm" style="color:var(--text-light);background:transparent;border:none" onclick="closeModal();renderStudy()">
+        返回章节列表
+      </button>
+    </div>
+  `);
+}
+
+function showChapterMnemonics(subjId, chapId){
+  const sub=SUBJECTS.find(s=>s.id===subjId);
+  const ch=CHAPTERS[subjId].find(c=>c.id===chapId);
+  const allMnems=MNEMONICS[subjId]||[];
+  // 优先展示本章相关口诀，其次展示全部本科目口诀
+  const related=allMnems.filter(m=>ch&&ch.points.some(pt=>m.title.includes(pt.title.substring(0,4))||m.detail.includes(pt.title.substring(0,4))||pt.detail.includes(m.tip)));
+  const items=related.length?related:allMnems;
+  showModal(`
+    <div class="modal-title">🧠 ${related.length?'本章口诀':'科目口诀'} · ${sub.short}<span class="modal-close" onclick="closeModal()">✕</span></div>
+    <div style="font-size:12px;color:var(--text-light);margin-bottom:12px">${ch?ch.name+' · ':''} 共 ${items.length} 条口诀</div>
+    ${items.map(m=>`<div class="card" style="border-left:4px solid ${sub.color};margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:14px;font-weight:600">💡 ${m.title}</div>
+        <span class="tag tag-warning" style="font-size:10px;white-space:nowrap;margin-left:8px">${m.tip}</span>
+      </div>
+      <div style="font-size:13px;line-height:1.8;color:var(--text)">${m.detail}</div>
+    </div>`).join('')}
+    <button class="btn btn-primary btn-block" onclick="closeModal();startQuizForChapter('${subjId}','${chapId}')">📝 去做练习题</button>
+  `);
 }
 
 function startQuizForChapter(subjId, chapId){
